@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Link, Switch, Route, BrowserRouter } from 'react-router-dom';
-import { isEqual } from 'lodash';
+import { connect } from 'react-redux';
+import { Link, Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
+import { get, isEqual } from 'lodash';
 
 import ThemeContext, { themes } from '../contexts/themeContext';
 import Home from './Home';
@@ -8,8 +9,10 @@ import FormikForm from './FormikForm';
 import ReduxForm from './ReduxForm';
 import Settings from './Settings';
 import List from './List';
+import Admin from './Admin';
+import { getCurrentUser } from '../redux/selectors/appState';
 
-const Router = () => {
+const Router = ({ currentRole }) => {
   const [currentTheme, setCurrentTheme] = useState(themes.light)
   const toggleTheme = () => {
     isEqual(currentTheme, themes.light)
@@ -39,6 +42,7 @@ const Router = () => {
             <Link style={linkStyles} to="/redux_form/50">Redux Form</Link>
             <Link style={linkStyles} to="/list">List</Link>
             <Link style={linkStyles} to="/settings">Settings</Link>
+            <Link style={linkStyles} to="/admin">Admin Panel</Link>
           </nav>
           <button type="button" onClick={toggleTheme}>Toggle Theme</button>
         </div>
@@ -49,6 +53,14 @@ const Router = () => {
             <Route path="/redux_form/:id" component={ReduxForm}/>
             <Route path="/list" component={List}/>
             <Route path="/settings" component={Settings}/>
+            <Route
+              path="/admin"
+              render={renderProps => (
+                (currentRole === 'admin')
+                  ? <Admin {...renderProps} />
+                  : <Redirect to='/' />
+              )}
+            />
             <Route path="/" component={Home} />
           </Switch>
         </ThemeContext.Provider>
@@ -57,4 +69,8 @@ const Router = () => {
   )
 }
 
-export default Router
+const mapStateToProps = state => ({
+  currentRole: get(getCurrentUser(state), 'role', 'guest'),
+})
+
+export default connect(mapStateToProps)(Router)

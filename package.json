@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "express-static-gzip": "^2.0.6",
     "formik": "^2.0.6",
     "lodash": "^4.17.15",
     "react": "^16.12.0",
@@ -22,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "find ./build -type f -name '*.css' -o -name '*.js' -exec gzip -k '{}' \\;"
   },
   "eslintConfig": {
     "extends": "react-app"

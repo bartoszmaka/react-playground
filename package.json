@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "find ./build -type f -name '*.css' -o -name '*.js' -exec gzip -k '{}' \\;"
+    "heroku-postbuild": "react-scripts build && find ./build -type f -name '*.css' -o -name '*.js' -exec gzip -k '{}' \\;"
   },
   "eslintConfig": {
     "extends": "react-app"

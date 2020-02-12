@@ -1,1 +1,1 @@
-web: node src/server.js
+web: npx serve -s build

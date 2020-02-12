@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "compression": "^1.7.4",
+    "express-minify": "^1.0.0",
     "formik": "^2.0.6",
     "lodash": "^4.17.15",
     "react": "^16.12.0",

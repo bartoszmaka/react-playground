@@ -14,10 +14,12 @@ import Admin from './Admin';
 import ErrorBoundary from './ErrorBoundary';
 import RequestCancellation from './RequestCancellation';
 import ModalsPage from './ModalsPage';
+import Login from './Login';
+import LoginCallback from './LoginCallback';
 import { getCurrentUser } from '../redux/selectors/appState';
 
 const Router = ({ currentRole }) => {
-  const [currentTheme, setCurrentTheme] = useState(themes.light)
+  const [currentTheme, setCurrentTheme] = useState(themes.dark)
   const toggleTheme = () => {
     isEqual(currentTheme, themes.light)
      ? setCurrentTheme(themes.dark)
@@ -50,6 +52,7 @@ const Router = ({ currentRole }) => {
             <Link style={linkStyles} to="/error">Error Boundaries</Link>
             <Link style={linkStyles} to="/cancellation">Request</Link>
             <Link style={linkStyles} to="/specialization">Specialization</Link>
+            <Link style={linkStyles} to="/oauth/login" >OAuth</Link>
           </nav>
           <button type="button" onClick={toggleTheme}>Toggle Theme</button>
         </div>
@@ -75,6 +78,8 @@ const Router = ({ currentRole }) => {
             />
             <Route path="/cancellation" component={RequestCancellation} />
             <Route path="/specialization" component={ModalsPage} />
+            <Route path="/oauth/login" component={Login} />
+            <Route path="/oauth/callback" component={LoginCallback} />
             <Route path="/" component={Home} />
           </Switch>
         </ThemeContext.Provider>

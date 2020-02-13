@@ -11,6 +11,7 @@
     "serve-static": "^1.14.1"
   },
   "scripts": {
+    "frontend": "cd react-ui/ && yarn start",
     "start": "node server",
     "build": "cd react-ui/ && yarn install && yarn run build"
   },

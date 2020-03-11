@@ -39,6 +39,12 @@ const CREATE_MOVIE = gql`
   }
 `
 
+const DESTROY_MOVIE = gql`
+  mutation DestroyMovie($id: Int!) {
+    destroyMovie(id: $id)
+  }
+`
+
 const Movies = () => {
   const { loading, error, data } = useQuery(GET_MOVIES)
   if (loading) return <p>Loading...</p>;
@@ -56,14 +62,20 @@ const Movie = ({ item }) => {
   const [title, setTitle] = useState(item.title)
   const [duration, setDuration] = useState(item.durationInMinutes)
   const [updateMovie, { loading, error }] = useMutation(UPDATE_MOVIE)
+  const [destroyMovie, { loading: loadingDelete, error: errorDelete }] = useMutation(DESTROY_MOVIE)
+
+  const handleDelete = () => {
+    destroyMovie({ variables: { id: item.id } })
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault()
+    updateMovie({ variables: { id: item.id, title: title, durationInMinutes: parseInt(duration) } })
+  }
 
   return (
     <div>
-      <form onSubmit={event => {
-        event.preventDefault()
-        updateMovie({ variables: { id: item.id, title: title, durationInMinutes: parseInt(duration) } })
-
-      }}>
+      <form onSubmit={handleSubmit}>
         <label>
           Title
           <input value={title} type="text" onChange={e => setTitle(e.target.value)} />
@@ -75,8 +87,10 @@ const Movie = ({ item }) => {
         </label>
 
         <button type="submit">Update</button>
-        { loading && <span>Loading</span> }
+        <button type="button" onClick={handleDelete} >Delete</button>
+        { (loading || loadingDelete) && <span>Loading</span> }
         { error && <pre>{JSON.stringify(error, null, 2)}</pre> }
+        { errorDelete && <pre>{JSON.stringify(errorDelete, null, 2)}</pre> }
       </form>
     </div>
   )

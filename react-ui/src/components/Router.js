@@ -18,6 +18,7 @@ const ErrorBoundary = React.lazy(() => import('./ErrorBoundary'))
 const RequestCancellation = React.lazy(() => import('./RequestCancellation'))
 const ModalsPage = React.lazy(() => import('./ModalsPage'))
 const Login = React.lazy(() => import('./Login'))
+const Movies = React.lazy(() => import('./Movies'))
 
 const Router = ({ currentRole }) => {
   const [currentTheme, setCurrentTheme] = useState(themes.dark)
@@ -54,6 +55,7 @@ const Router = ({ currentRole }) => {
             <Link style={linkStyles} to="/cancellation">Request</Link>
             <Link style={linkStyles} to="/specialization">Specialization</Link>
             <Link style={linkStyles} to="/oauth/login" >OAuth</Link>
+            <Link style={linkStyles} to="/movies">Movies</Link>
           </nav>
           <button type="button" onClick={toggleTheme}>Toggle Theme</button>
         </div>
@@ -82,6 +84,7 @@ const Router = ({ currentRole }) => {
               <Route path="/specialization" component={ModalsPage} />
               <Route path="/oauth/login" component={Login} />
               <Route path="/oauth/callback" component={LoginCallback} />
+              <Route path="/movies" component={Movies} />
               <Route path="/" component={Home} />
             </Switch>
           </Suspense>

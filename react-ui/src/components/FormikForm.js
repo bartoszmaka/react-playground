@@ -2,6 +2,8 @@ import React from 'react';
 import {Formik, Form, Field, ErrorMessage, FieldArray} from 'formik';
 import * as Yup from 'yup';
 
+import Input from './reusable/Input';
+
 const validationSchema = Yup.object().shape({
   title: Yup
     .string()
@@ -38,7 +40,7 @@ const FormikForm = (props) => {
     return (
       <Form className='form'>
         <label htmlFor='title'>title</label>
-        <Field name='title' className='form-input' />
+        <Field as={Input} name='title' />
         <ErrorMessage name='title'/>
 
         <label htmlFor='content'>content</label>

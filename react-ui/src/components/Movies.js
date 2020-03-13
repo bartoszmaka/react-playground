@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import React, { useState } from 'react';
 
 const GET_MOVIES = gql`
@@ -8,6 +8,7 @@ const GET_MOVIES = gql`
       id,
       title,
       durationInMinutes
+      __typename
     }
   }
 `
@@ -20,7 +21,12 @@ const UPDATE_MOVIE = gql`
         title: $title,
         durationInMinutes: $durationInMinutes
       }
-    )
+    ) {
+      id,
+      title,
+      durationInMinutes
+      __typename
+    }
   }
 `
 
@@ -35,13 +41,17 @@ const CREATE_MOVIE = gql`
       id,
       title,
       durationInMinutes
+      __typename
     }
   }
 `
 
 const DESTROY_MOVIE = gql`
   mutation DestroyMovie($id: Int!) {
-    destroyMovie(id: $id)
+    destroyMovie(id: $id) {
+      id,
+      __typename
+    }
   }
 `
 
@@ -65,12 +75,48 @@ const Movie = ({ item }) => {
   const [destroyMovie, { loading: loadingDelete, error: errorDelete }] = useMutation(DESTROY_MOVIE)
 
   const handleDelete = () => {
-    destroyMovie({ variables: { id: item.id } })
+    destroyMovie({
+      variables: { id: item.id },
+      optimisticResponse: {
+        data: {
+          destroyMovie: {
+            id: item.id,
+            __typename: "Movie"
+          }
+        }
+      },
+      update: (proxy) => {
+        const data = proxy.readQuery({ query: GET_MOVIES })
+        proxy.writeQuery({
+          query: GET_MOVIES,
+          data: {
+            ...data,
+            movies: data.movies.filter(movie => movie.id !== item.id)
+          }
+        })
+      }
+    })
   }
 
   const handleSubmit = event => {
     event.preventDefault()
-    updateMovie({ variables: { id: item.id, title: title, durationInMinutes: parseInt(duration) } })
+
+    const { id } = item;
+    const durationInMinutes = parseInt(duration)
+
+    updateMovie({
+      variables: { id, title, durationInMinutes },
+      optimisticResponse: {
+        data: {
+          updateMovie: {
+            id,
+            title,
+            durationInMinutes,
+            __typename: "Movie"
+          }
+        }
+      }
+    })
   }
 
   return (
@@ -87,10 +133,10 @@ const Movie = ({ item }) => {
         </label>
 
         <button type="submit">Update</button>
-        <button type="button" onClick={handleDelete} >Delete</button>
-        { (loading || loadingDelete) && <span>Loading</span> }
-        { error && <pre>{JSON.stringify(error, null, 2)}</pre> }
-        { errorDelete && <pre>{JSON.stringify(errorDelete, null, 2)}</pre> }
+        <button type="button" onClick={handleDelete}>Delete</button>
+        {(loading || loadingDelete) && <span>Loading</span>}
+        {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
+        {errorDelete && <pre>{JSON.stringify(errorDelete, null, 2)}</pre>}
       </form>
     </div>
   )
@@ -99,26 +145,43 @@ const Movie = ({ item }) => {
 const AddMovieForm = () => {
   const [title, setTitle] = useState('')
   const [duration, setDuration] = useState('')
-  const [addMovie, { loading, error }] = useMutation(
-    CREATE_MOVIE,
-    {
-      update(cache, { data: { addMovie } }) {
-        const { movies } = cache.readQuery({ query: GET_MOVIES })
-        cache.writeQuery({
-          query: GET_MOVIES,
-          data: { movies: movies.concat([addMovie]) }
+  const [addMovie, { loading, error }] = useMutation(CREATE_MOVIE)
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setTitle('')
+    setDuration('')
+
+    const durationInMinutes = parseInt(duration)
+
+    addMovie({
+      variables: { title, durationInMinutes },
+      optimisticResponse: {
+        data: {
+          createMovie: {
+            title,
+            durationInMinutes,
+            __typename: "Movie"
+          }
+        }
+      },
+      update: (proxy, { data: { createMovie } }) => {
+        const data = proxy.readQuery({ query: GET_MOVIES })
+        createMovie && proxy.writeQuery({
+          query: GET_MOVIES, data: {
+            ...data,
+            movies: [
+              ...data.movies,
+              createMovie,
+            ]
+          }
         })
       }
-    }
-  )
-
-  const handleSubmit = (event, addMovie) => {
-    event.preventDefault()
-    addMovie({ variables: { title, durationInMinutes: parseInt(duration) } })
+    })
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, addMovie)}>
+    <form onSubmit={handleSubmit}>
       <label>
         Title
         <input value={title} type="text" onChange={e => setTitle(e.target.value)} />
@@ -130,8 +193,8 @@ const AddMovieForm = () => {
       </label>
 
       <button type="submit">Add</button>
-      { loading && <span>Loading</span> }
-      { error && <pre>{JSON.stringify(error, null, 2)}</pre> }
+      {loading && <span>Loading</span>}
+      {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
     </form>
   )
 }

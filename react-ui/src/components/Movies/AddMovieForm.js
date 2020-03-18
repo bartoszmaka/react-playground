@@ -1,24 +1,7 @@
-import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import React, { useState } from 'react';
 
-import { GET_MOVIES } from './Movies';
-
-const CREATE_MOVIE = gql`
-  mutation CreateMovie($title: String!, $durationInMinutes: Int!) {
-    createMovie(
-      options: {
-        title: $title,
-        durationInMinutes: $durationInMinutes
-      }
-    ) {
-      id,
-      title,
-      durationInMinutes
-      __typename
-    }
-  }
-`
+import { GET_MOVIES, CREATE_MOVIE } from './gql';
 
 const AddMovieForm = () => {
   const [title, setTitle] = useState('')

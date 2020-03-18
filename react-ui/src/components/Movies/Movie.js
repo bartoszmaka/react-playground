@@ -1,34 +1,7 @@
-import { gql } from 'apollo-boost';
-import { useMutation, useQuery, useSubscription } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import React, { useState } from 'react';
 
-import { GET_MOVIES } from './Movies';
-
-const UPDATE_MOVIE = gql`
-  mutation UpdateMovie($id: ID!, $title: String!, $durationInMinutes: Int!) {
-    updateMovie(
-      id: $id,
-      options: {
-        title: $title,
-        durationInMinutes: $durationInMinutes
-      }
-    ) {
-      id,
-      title,
-      durationInMinutes
-      __typename
-    }
-  }
-`
-
-const DESTROY_MOVIE = gql`
-  mutation DestroyMovie($id: ID!) {
-    destroyMovie(id: $id) {
-      id,
-      __typename
-    }
-  }
-`
+import { GET_MOVIES, UPDATE_MOVIE, DESTROY_MOVIE } from './gql';
 
 const Movie = ({ item }) => {
   const [title, setTitle] = useState(item.title)

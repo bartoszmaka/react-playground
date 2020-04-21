@@ -13,6 +13,7 @@ const FormikForm = React.lazy(() => import('./FormikForm'))
 const ReduxForm = React.lazy(() => import('./ReduxForm'))
 const Settings = React.lazy(() => import('./Settings'))
 const List = React.lazy(() => import('./List'))
+const HugeList = React.lazy(() => import('./HugeList'))
 const Admin = React.lazy(() => import('./Admin'))
 const ErrorBoundary = React.lazy(() => import('./ErrorBoundary'))
 const RequestCancellation = React.lazy(() => import('./RequestCancellation'))
@@ -49,6 +50,7 @@ const Router = ({ currentRole }) => {
             <Link style={linkStyles} to="/formik/42">Formik</Link>
             <Link style={linkStyles} to="/redux_form/50">Redux Form</Link>
             <Link style={linkStyles} to="/list">List</Link>
+            <Link style={linkStyles} to="/huge-list">Huge List</Link>
             <Link style={linkStyles} to="/settings">Settings</Link>
             <Link style={linkStyles} to="/admin">Admin Panel</Link>
             <Link style={linkStyles} to="/error">Error Boundaries</Link>
@@ -66,6 +68,7 @@ const Router = ({ currentRole }) => {
               <Route path="/formik/:id" component={FormikForm}/>
               <Route path="/redux_form/:id" component={ReduxForm}/>
               <Route path="/list" component={List}/>
+              <Route path="/huge-list" component={HugeList}/>
               <Route path="/settings" component={Settings}/>
               <Route path="/error" render={(routeProps) => (
                 <Boundary>

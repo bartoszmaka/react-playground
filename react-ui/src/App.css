@@ -51,3 +51,24 @@ body {
   min-width: 400px;
   min-height: 25;
 }
+
+.backgrounds {
+  background-image: url("https://pngimg.com/uploads/dog/dog_PNG50348.png"), url("https://www.vanseodesign.com/blog/wp-content/uploads/2011/10/pattern.jpg");
+  background-repeat: no-repeat, repeat;
+  background-attachment: fixed, fixed;
+  background-position: 75% 75%, left top;
+  min-height: 300vh;
+}
+
+.backgrounds__welcome {
+  border: dashed red 5px;
+  padding: 50px;
+  background-image: url("https://img.icons8.com/cotton/2x/dog-bone.png");
+  background-clip: content-box;
+  background-size: 50px 50px;
+  color: black;
+  font-size: 40px;
+  font-family: "Comic Sans MS";
+  text-align: center;
+  text-shadow: 0px 0px 10px white;
+}

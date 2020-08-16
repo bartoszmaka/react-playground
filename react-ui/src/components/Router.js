@@ -8,6 +8,7 @@ import Boundary from '../wrappers/Boundary';
 import Home from './Home';
 import LoginCallback from './LoginCallback';
 import ThemeContext, { themes } from '../contexts/themeContext';
+import PrettyLink from './reusable/PrettyLink';
 
 const FormikForm = React.lazy(() => import('./FormikForm'))
 const ReduxForm = React.lazy(() => import('./ReduxForm'))
@@ -47,14 +48,14 @@ const Router = ({ currentRole }) => {
       <BrowserRouter>
         <div>
           <nav>
-            <Link style={linkStyles} to="/">Home</Link>
-            <Link style={linkStyles} to="/formik/42">Formik</Link>
-            <Link style={linkStyles} to="/redux_form/50">Redux Form</Link>
-            <Link style={linkStyles} to="/list">List</Link>
-            <Link style={linkStyles} to="/huge-list">Huge List</Link>
-            <Link style={linkStyles} to="/settings">Settings</Link>
-            <Link style={linkStyles} to="/admin">Admin Panel</Link>
-            <Link style={linkStyles} to="/error">Error Boundaries</Link>
+            <PrettyLink theme={linkStyles} to="/">Home</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/formik/42">Formik</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/redux_form/50">Redux Form</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/list">List</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/huge-list">Huge List</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/settings">Settings</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/admin">Admin Panel</PrettyLink>
+            <PrettyLink theme={linkStyles} to="/error">Error Boundaries</PrettyLink>
             <Link style={linkStyles} to="/cancellation">Request</Link>
             <Link style={linkStyles} to="/specialization">Specialization</Link>
             <Link style={linkStyles} to="/oauth/login" >OAuth</Link>

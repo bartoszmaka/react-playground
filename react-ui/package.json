@@ -24,7 +24,7 @@
     "redux": "^4.0.4",
     "redux-form": "^8.2.6",
     "rollbar": "^2.14.4",
-    "styled-components": "^5.0.1",
+    "styled-components": "^5.1.1",
     "subscriptions-transport-ws": "^0.9.16",
     "yup": "^0.27.0"
   },

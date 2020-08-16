@@ -2,6 +2,7 @@ import React from 'react';
 import {Formik, Form, Field, ErrorMessage, FieldArray} from 'formik';
 import * as Yup from 'yup';
 
+import Textarea from './reusable/Textarea';
 import Input from './reusable/Input';
 
 const validationSchema = Yup.object().shape({
@@ -44,15 +45,15 @@ const FormikForm = (props) => {
         <ErrorMessage name='title'/>
 
         <label htmlFor='content'>content</label>
-        <Field name='content' as='textarea' className='form-input' />
+        <Field name='content' as={Textarea}/>
         <ErrorMessage name='content'/>
 
         <label htmlFor='author.email'>email</label>
-        <Field name='author.email' type='email' className='form-input' />
+        <Field as={Input} name='author.email' type='email'/>
         <ErrorMessage name='author.email'/>
 
         <label htmlFor='author.address'>address</label>
-        <Field name='author.address' className='form-input' />
+        <Field as={Input} name='author.address'/>
         <ErrorMessage name='author.address'/>
 
         <FieldArray
@@ -64,7 +65,7 @@ const FormikForm = (props) => {
                   <label htmlFor='favoriteSnacks.0'> favorite snacks</label>
                   {values.favoriteSnacks.map((_snack, index) => (
                     <div key={index}>
-                      <Field name={`favoriteSnacks.${index}`} className='form-input' />
+                      <Field as={Input} name={`favoriteSnacks.${index}`}/>
                       <ErrorMessage name={`favoriteSnacks.${index}`}/>
 
                       <button type='button' onClick={() => arrayHelpers.remove(index)}>-</button>

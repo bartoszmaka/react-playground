@@ -22,6 +22,7 @@ const ModalsPage = React.lazy(() => import('./ModalsPage'))
 const Login = React.lazy(() => import('./Login'))
 const Movies = React.lazy(() => import('./Movies'))
 const Backgrounds = React.lazy(() => import('./Backgrounds'))
+const Accordions = React.lazy(() => import('./Accordions'))
 
 const Router = ({ currentRole }) => {
   const [currentTheme, setCurrentTheme] = useState(themes.dark)
@@ -61,6 +62,7 @@ const Router = ({ currentRole }) => {
             <Link style={linkStyles} to="/oauth/login" >OAuth</Link>
             <Link style={linkStyles} to="/movies">Movies</Link>
             <Link style={linkStyles} to="/backgrounds">Backgrounds</Link>
+            <Link style={linkStyles} to="/accordions">Accordions</Link>
           </nav>
           <button type="button" onClick={toggleTheme}>Toggle Theme</button>
         </div>
@@ -92,6 +94,7 @@ const Router = ({ currentRole }) => {
               <Route path="/oauth/callback" component={LoginCallback} />
               <Route path="/movies" component={Movies} />
               <Route path="/backgrounds" component={Backgrounds} />
+              <Route path="/accordions" component={Accordions} />
               <Route path="/" component={Home} />
             </Switch>
           </Suspense>
